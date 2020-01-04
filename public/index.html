@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        background-image: url("kickban3000.jpg");
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin-top: 7em;
+        margin-left: 12em;
+        width: 960px;
+        height: 500px;
+        position: relative;
+    }
+
+    form {
+        position: absolute;
+        font-size: 2em;
+        color: black;
+        margin-top: 0px;
+        top: 0em;
+        left: 1em;
+    }
+
+    path {
+        opacity: 0.5;
+        fill-rule: evenodd;
+        stroke: #333;
+        stroke-width: 2px;
+    }
+
+    .sun path {
+        opacity: 0.6;
+        fill: #22FFFF;
+    }
+
+    .planet path {
+        opacity: 0.7;
+        fill: #FFca75;
+    }
+
+    .annulus path {
+        opacity: 0.8;
+        fill: #FFaa00;
+    }
+
+    .kickban path {
+        opacity: 0.5;
+        fill: #FFcd0f;
+    }
+
+img {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+img:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+    #kanditat1 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("jette.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 200px;
+        margin-left: 400px;
+    }
+
+    #kanditat2 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("burn.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 280px;
+        margin-left: 260px;
+    }
+
+    #kanditat3 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("christine.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 440px;
+        margin-left: 250px;
+    }
+
+    #kanditat4 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("chantall.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 530px;
+        margin-left: 400px;
+    }
+
+    #kanditat5 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("fuchs.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 230px;
+        margin-left: 560px;
+    }
+
+    #kanditat6 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("theiner.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 380px;
+        margin-left: 620px;
+    }
+
+    #kanditat7 {
+        z-index: -1;
+        opacity: 0.8;
+        background-image: url("yasmin.jpg");
+        position: absolute;
+        height: 80px;
+        width: 80px;
+        margin-top: 510px;
+        margin-left: 550px;
+    }
+</style>
+
+<div id="kanditat1">1</div>
+<div id="kanditat2">2</div>
+<div id="kanditat3">3</div>
+<div id="kanditat4">4</div>
+<div id="kanditat5">5</div>
+<div id="kanditat6">6</div>
+<div id="kanditat7">7</div>
+<form>
+    <input type="radio" name="reference" id="ref-annulus" checked>
+    <label for="ref-annulus"><img src="admonster1.jpg"/></label>
+    <input type="radio" name="reference" id="ref-planet">
+    <label for="ref-planet"><img src="admonster2.jpg"/></label>
+    <input type="radio" name="reference" id="ref-sun">
+    <label for="ref-sun"><img src="admonster5.jpg"/></label>
+    <input type="radio" name="reference" id="ref-benni">
+    <label for="ref-benni"><img src="admonster4.jpg"/></label>
+    <input type="radio" name="reference" id="ref-andreas">
+    <label for="ref-andreas"><img src="admonster3.jpg"/></label>
+</form>
+<script src="autobahn.min.js"></script>
+<script src="d3.min.js"></script>
+<script>
+    var width = 960,
+        height = 800,
+        radius = 40,
+        x = Math.sin(2 * Math.PI / 3),
+        y = Math.cos(2 * Math.PI / 3);
+
+    var offset = 0,
+        speed = 4,
+        start = Date.now();
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("xlink:href", "kickban.svg")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(.55)")
+        .append("g");
+
+    var frame = svg.append("g")
+        .datum({ radius: Infinity });
+
+    frame.append("g")
+        .attr("class", "annulus")
+        .datum({ teeth: 80, radius: -radius * 5, annulus: true })
+        .append("path")
+        .attr("d", gear);
+
+    frame.append("g")
+        .attr("class", "sun")
+        .datum({ teeth: 16, radius: radius })
+        .append("path")
+        .attr("d", gear);
+
+    frame.append("g")
+        .attr("class", "planet")
+        .attr("transform", "translate(0,-" + radius * 3 + ")")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("path")
+        .attr("d", gear);
+
+    frame.append("g")
+        .attr("class", "planet")
+        .attr("transform", "translate(" + -radius * 3 * x + "," + -radius * 3 * y + ")")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("path")
+        .attr("d", gear);
+
+    var kick = frame.append("g")
+        .attr("class", "kickban")
+        .attr("transform", "translate(" + -radius * 3 * x + "," + -radius * 3 * y + ")")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("path")
+        .attr("d", gear);
+
+    var kick = frame.append("g")
+        .attr("class", "planet")
+        .attr("transform", "translate(" + -radius * 3 * x + "," + -radius * 3 * y + ")")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("path")
+        .attr("d", gear);
+
+    frame.append("g")
+        .attr("class", "sun")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("image")
+        .attr("xlink:href", "wimi.svg")
+        .attr("width", 1000).attr("height", 500)
+
+    frame.append("g")
+        .attr("class", "kickban")
+        .datum({ teeth: 32, radius: radius * 2 })
+        .append("image")
+        .attr("xlink:href", "schuh.svg")
+        .attr("width", 500).attr("height", 500)
+
+    frame.append("g")
+        .attr("class", "kickban")
+        .datum({ teeth: 32, radius: -radius * 2 })
+        .append("image")
+        .attr("xlink:href", "kickban.svg")
+        .attr("transform", "translate(" + -radius * 3 * x + "," + -radius * 3 * y + ")")
+        .attr("width", 500)
+        .attr("height", 500);
+
+    var gCustomColor = [0,0,255];
+    d3.selectAll("input[name=reference]")
+        .data([radius * 5, Infinity, -radius])
+        .on("change", function (radius1) {
+            console.log("admin changed");
+            switch (this.id) {
+                case "ref-annulus":
+                    gCustomColor = [200, 0, 0];
+                    document.body.style.backgroundImage = "url('admin1.jpg')";
+                    break;
+                case "ref-planet":
+                    gCustomColor = [0, 200, 0];
+                    document.body.style.backgroundImage = "url('admin2.jpg')";
+                    break;
+                case "ref-sun":
+                    gCustomColor = [0, 0, 200];
+                    document.body.style.backgroundImage = "url('admin3.jpg')";
+                    break;
+                default:
+                    console.log("no admin")
+            }
+
+            var radius0 = frame.datum().radius, angle = (Date.now() - start) * speed;
+            frame.datum({ radius: radius1 });
+            svg.attr("transform", "rotate(" + (offset += angle / radius0 - angle / radius1) + ")");
+        });
+
+    d3.selectAll("input[name=speed]")
+        .on("change", function () {
+            speed = +this.value;
+        });
+
+    function gear(d) {
+        var n = d.teeth,
+            r2 = Math.abs(d.radius),
+            r0 = r2 - 8,
+            r1 = r2 + 8,
+            r3 = d.annulus ? (r3 = r0, r0 = r1, r1 = r3, r2 + 20) : 20,
+            da = Math.PI / n,
+            a0 = -Math.PI / 2 + (d.annulus ? Math.PI / n : 0),
+            i = -1,
+            path = ["M", r0 * Math.cos(a0), ",", r0 * Math.sin(a0)];
+        while (++i < n) path.push(
+            "A", r0, ",", r0, " 0 0,1 ", r0 * Math.cos(a0 += da), ",", r0 * Math.sin(a0),
+            "L", r2 * Math.cos(a0), ",", r2 * Math.sin(a0),
+            "L", r1 * Math.cos(a0 += da / 3), ",", r1 * Math.sin(a0),
+            "A", r1, ",", r1, " 0 0,1 ", r1 * Math.cos(a0 += da / 3), ",", r1 * Math.sin(a0),
+            "L", r2 * Math.cos(a0 += da / 3), ",", r2 * Math.sin(a0),
+            "L", r0 * Math.cos(a0), ",", r0 * Math.sin(a0));
+        path.push("M0,", -r3, "A", r3, ",", r3, " 0 0,0 0,", r3, "A", r3, ",", r3, " 0 0,0 0,", -r3, "Z");
+        return path.join("");
+    }
+    wamp_connect("192.696.0.1");
+    var loc_timer = d3.timer(function () {
+        var angle = (Date.now() - start) * speed,
+            transform = function (d) { return "rotate(" + angle / d.radius + ")"; };
+        frame.selectAll("path").attr("transform", transform);
+        frame.selectAll("rect").attr("transform", transform);
+        frame.selectAll("image").attr("transform", transform);
+        frame.attr("transform", transform); // frame of reference
+    });
+    var led_interval = null;
+    function wamp_connect(arg) {
+        this.wampConnection = new autobahn.Connection({
+            url: 'ws://' + arg + ':8080/ws',
+            realm: "realm1"
+        });
+        this.wampConnection.open();
+        this.wampConnection.onopen = function (session) {
+            this.session = session;
+            var that = this
+            console.log("Connection Anstalt session open");
+            session.subscribe("anstalt.kickban.stop", callback).then(
+                function (sub) {
+                    console.log("subscribed to prefix: kickban");
+                },
+                function (err) {
+                    console.log("failed to subscribe: kickban ->" + err);
+                });
+            session.subscribe("anstalt.kickban.start", function () {
+                loc_timer = d3.timer(function () {
+                    var angle = (Date.now() - start) * speed,
+                        transform = function (d) { return "rotate(" + angle / d.radius + ")"; };
+                    frame.selectAll("path").attr("transform", transform);
+                    frame.selectAll("rect").attr("transform", transform);
+                    frame.selectAll("image").attr("transform", transform);
+                    frame.attr("transform", transform); // frame of reference
+                });
+                led_interval = setInterval(function () {
+                    console.log("call led");
+                    that.session.call("iot.led.stripe", ["fast", "fast", "fast"]).then(
+                        function (res) {
+                            console.log("led result:", res);
+                            that.session.call("iot.led.customcolor",gCustomColor);
+                        },
+                        function (err) {
+                            console.log("led error:", err);
+                        }
+                    )
+                }.bind(this), 3000)
+            })
+        };
+
+    }
+    function callback(arg) {
+        loc_timer.stop();
+        clearInterval(led_interval);
+    }
+
+</script>
+
