@@ -1,0 +1,20 @@
+{
+  "name": "kickban3000",
+  "version": "1.0.0",
+  "description": "totally crazy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "anstalt",
+    "kickban",
+    "crazy"
+  ],
+  "author": "jette",
+  "license": "MIT",
+  "dependencies": {
+    "cfenv": "^1.0.4",
+    "express": "^4.15.4"
+  }
+}
